@@ -1,0 +1,55 @@
+{
+  "name": "@adv-ui/piko-logger",
+  "version": "0.0.1",
+  "description": "Tiny logger for web environments",
+  "main": "dist",
+  "scripts": {
+    "clean": "rm -Rf dist",
+    "phoenix": "rm -Rf node_modules && rm -Rf package-lock.json && npm i",
+    "prepack": "npm run clean && npm run build",
+    "test": "sui-test server --pattern '\"src/test/**/*Test.js\"'",
+    "coverage": "nyc --reporter=html --exclude='\"src/test/**/*Test.js\"' npm run test",
+    "coverage:ci": "nyc --reporter=cobertura --exclude='\"src/test/**/*Test.js\"' npm run test && codecov",
+    "lint": "sui-lint js",
+    "check": "npm run lint && npm run test",
+    "build": "babel src/main --out-dir dist",
+    "versiona": "node versiona.js"
+  },
+  "repository": "github:scm-spain/piko-logger",
+  "bugs": "https://github.com/scm-spain/piko-logger/issues",
+  "keywords": [
+    "ads",
+    "advertising",
+    "schibsted",
+    "adevinta",
+    "logger"
+  ],
+  "author": "One Punch Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "7.8.0",
+    "@babel/core": "7.8.0",
+    "@babel/plugin-transform-modules-commonjs": "7.8.0",
+    "@babel/register": "7.8.0",
+    "@babel/runtime": "7.8.0",
+    "@s-ui/lint": "3",
+    "@s-ui/test": "2",
+    "babel-plugin-transform-define": "2.0.0",
+    "babel-preset-sui": "3",
+    "chai": "4.2.0",
+    "codecov": "3.6.5",
+    "html-webpack-plugin": "4.0.4",
+    "mocha": "5.2.0",
+    "nyc": "15.0.0",
+    "versiona": "4"
+  },
+  "eslintConfig": {
+    "extends": [
+      "./node_modules/@s-ui/lint/eslintrc.js"
+    ]
+  },
+  "prettier": "./node_modules/@s-ui/lint/.prettierrc.js",
+  "stylelint": {
+    "extends": "./node_modules/@s-ui/lint/stylelint.config.js"
+  }
+}

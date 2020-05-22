@@ -105,5 +105,41 @@ describe('PikoLogger', () => {
       expect(debugSpy.callCount).to.equal(0)
       expect(warnSpy.callCount).to.equal(0)
     })
+
+    it('should log corresponding level for each initializated logger', () => {
+      const loggerKey1 = 'test'
+      const loggerKey2 = 'test2'
+      window.localStorage.setItem(`piko.level.${loggerKey1}`, 'debug')
+      window.localStorage.setItem(`piko.level.${loggerKey2}`, 'error')
+      const aDebugMessage = 'debug testing'
+      const aDebugMessage2 = 'debug testing 2'
+      const anErrorMessage = 'error testing'
+      const anErrorMessage2 = 'error testing 2'
+
+      const piko = new PikoLogger()
+      const logger1 = piko.logger(loggerKey1)
+      logger1.debug(() => aDebugMessage)
+      logger1.debug(() => aDebugMessage2)
+      logger1.error(() => anErrorMessage)
+
+      const logger2 = piko.logger(loggerKey2)
+      logger2.debug(() => aDebugMessage)
+      logger2.debug(() => aDebugMessage2)
+      logger2.error(() => anErrorMessage)
+      logger2.error(() => anErrorMessage2)
+
+      expect(debugSpy.callCount).to.equal(2)
+      expect(debugSpy.args[0][0]).to.equal('DEBUG | test | ')
+      expect(debugSpy.args[0][1]).to.equal(aDebugMessage)
+      expect(debugSpy.args[1][0]).to.equal('DEBUG | test | ')
+      expect(debugSpy.args[1][1]).to.equal(aDebugMessage2)
+      expect(warnSpy.callCount).to.equal(3)
+      expect(warnSpy.args[0][0]).to.equal('ERROR | test | ')
+      expect(warnSpy.args[0][1]).to.equal(anErrorMessage)
+      expect(warnSpy.args[1][0]).to.equal('ERROR | test2 | ')
+      expect(warnSpy.args[1][1]).to.equal(anErrorMessage)
+      expect(warnSpy.args[2][0]).to.equal('ERROR | test2 | ')
+      expect(warnSpy.args[2][1]).to.equal(anErrorMessage2)
+    })
   })
 })

@@ -1,7 +1,7 @@
 import {JSDOM} from 'jsdom'
 import {expect} from 'chai'
 import sinon from 'sinon'
-import {PikoLogger} from '../../main/application/PikoLogger'
+import PikoLogger from '../main/index'
 
 describe('PikoLogger', () => {
   const dom = new JSDOM('<!DOCTYPE html><body></body>', {
@@ -27,6 +27,7 @@ describe('PikoLogger', () => {
     const anInfoMessage = 'info testing'
     const aFatalMessage = 'fatal testing'
     const aWarnMessage = 'warn testing'
+    const Piko = PikoLogger
 
     before(() => {
       consoleDebug = console.log
@@ -62,6 +63,8 @@ describe('PikoLogger', () => {
       traceSpy.resetHistory()
       infoSpy.resetHistory()
       warnSpy.resetHistory()
+      // To simulate a different module importation
+      Piko._logger.clear()
     })
 
     it('should log corresponding levels when initialized in localStorage with "trace"', () => {
@@ -69,8 +72,7 @@ describe('PikoLogger', () => {
       window.localStorage.setItem(`piko.level.${loggerKey}`, 'trace')
       const aDebugMessage2 = 'debug testing 2'
 
-      const piko = new PikoLogger()
-      const logger = piko.logger(loggerKey)
+      const logger = Piko.logger(loggerKey)
 
       logger.debug(() => aDebugMessage)
       logger.debug(() => aDebugMessage2)
@@ -104,8 +106,7 @@ describe('PikoLogger', () => {
       window.localStorage.setItem(`piko.level.${loggerKey}`, 'debug')
       const aDebugMessage2 = 'debug testing 2'
 
-      const piko = new PikoLogger()
-      const logger = piko.logger(loggerKey)
+      const logger = Piko.logger(loggerKey)
 
       logger.debug(() => aDebugMessage)
       logger.debug(() => aDebugMessage2)
@@ -139,8 +140,7 @@ describe('PikoLogger', () => {
       window.localStorage.setItem(`piko.level.${loggerKey}`, 'info')
       const aDebugMessage2 = 'debug testing 2'
 
-      const piko = new PikoLogger()
-      const logger = piko.logger(loggerKey)
+      const logger = Piko.logger(loggerKey)
 
       logger.debug(() => aDebugMessage)
       logger.debug(() => aDebugMessage2)
@@ -170,8 +170,7 @@ describe('PikoLogger', () => {
       window.localStorage.setItem(`piko.level.${loggerKey}`, 'warn')
       const aDebugMessage2 = 'debug testing 2'
 
-      const piko = new PikoLogger()
-      const logger = piko.logger(loggerKey)
+      const logger = Piko.logger(loggerKey)
 
       logger.debug(() => aDebugMessage)
       logger.debug(() => aDebugMessage2)
@@ -198,8 +197,7 @@ describe('PikoLogger', () => {
       const loggerKey = 'test'
       window.localStorage.setItem(`piko.level.${loggerKey}`, 'error')
 
-      const piko = new PikoLogger()
-      const logger = piko.logger(loggerKey)
+      const logger = Piko.logger(loggerKey)
       logger.debug(() => aDebugMessage)
       logger.error(() => anErrorMessage)
       logger.fatal(() => aFatalMessage)
@@ -217,8 +215,7 @@ describe('PikoLogger', () => {
       window.localStorage.setItem(`piko.level.${loggerKey}`, 'fatal')
       const aDebugMessage2 = 'debug testing 2'
 
-      const piko = new PikoLogger()
-      const logger = piko.logger(loggerKey)
+      const logger = Piko.logger(loggerKey)
 
       logger.debug(() => aDebugMessage)
       logger.debug(() => aDebugMessage2)
@@ -240,8 +237,7 @@ describe('PikoLogger', () => {
     it('should not log any level when initialized in localStorage with "off"', () => {
       const loggerKey = 'test'
 
-      const piko = new PikoLogger()
-      const logger = piko.logger(loggerKey)
+      const logger = Piko.logger(loggerKey)
       logger.debug(() => aDebugMessage)
       logger.error(() => anErrorMessage)
       logger.trace(() => aTraceMessage)
@@ -258,8 +254,7 @@ describe('PikoLogger', () => {
       const loggerKey = 'test'
       window.localStorage.setItem(`piko.level.${loggerKey}`, 'all')
 
-      const piko = new PikoLogger()
-      const logger = piko.logger(loggerKey)
+      const logger = Piko.logger(loggerKey)
       logger.debug(() => aDebugMessage)
       logger.error(() => anErrorMessage)
       logger.trace(() => aTraceMessage)
@@ -276,8 +271,7 @@ describe('PikoLogger', () => {
       window.localStorage.clear()
       const loggerKey = 'test'
 
-      const piko = new PikoLogger()
-      const logger = piko.logger(loggerKey)
+      const logger = Piko.logger(loggerKey)
       logger.debug(() => aDebugMessage)
       logger.error(() => anErrorMessage)
       logger.trace(() => aTraceMessage)
@@ -298,13 +292,12 @@ describe('PikoLogger', () => {
       const aDebugMessage2 = 'debug testing 2'
       const anErrorMessage2 = 'error testing 2'
 
-      const piko = new PikoLogger()
-      const logger1 = piko.logger(loggerKey1)
+      const logger1 = Piko.logger(loggerKey1)
       logger1.debug(() => aDebugMessage)
       logger1.debug(() => aDebugMessage2)
       logger1.error(() => anErrorMessage)
 
-      const logger2 = piko.logger(loggerKey2)
+      const logger2 = Piko.logger(loggerKey2)
       logger2.debug(() => aDebugMessage)
       logger2.debug(() => aDebugMessage2)
       logger2.error(() => anErrorMessage)

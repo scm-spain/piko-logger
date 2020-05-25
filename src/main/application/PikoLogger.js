@@ -12,6 +12,8 @@ export class PikoLogger {
     if (!this._logger.get(key)) {
       this._logger.set(key, logger)
       return logger
+    } else {
+      return this._logger.get(key)
     }
   }
 }

@@ -8,6 +8,8 @@
     "phoenix": "rm -Rf node_modules && rm -Rf package-lock.json && npm i",
     "prepack": "npm run clean && npm run build",
     "test": "sui-test server --pattern '\"src/test/**/*Test.js\"'",
+    "integration-test": "sui-test server --pattern \"src/integration-test/**/*Test.js\"",
+    "test-all": "npm run test && npm run integration-test",
     "coverage": "nyc --reporter=html --exclude='\"src/test/**/*Test.js\"' npm run test",
     "coverage:ci": "nyc --reporter=cobertura --exclude='\"src/test/**/*Test.js\"' npm run test && codecov",
     "lint": "sui-lint js",

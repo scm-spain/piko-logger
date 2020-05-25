@@ -1,5 +1,5 @@
 export class Logger {
-  constructor({level, key}) {
+  constructor({level, key = 'DEFAULT'}) {
     this._key = key
     this._level = level
     this._console = console

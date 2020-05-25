@@ -13,97 +13,281 @@ describe('PikoLogger', () => {
   describe('logger method', () => {
     let consoleDebug
     let consoleError
+    let consoleTrace
+    let consoleInfo
+    let consoleWarn
     let debugSpy
+    let errorSpy
     let warnSpy
+    let traceSpy
+    let infoSpy
+    const aDebugMessage = 'debug testing'
+    const anErrorMessage = 'error testing'
+    const aTraceMessage = 'trace testing'
+    const anInfoMessage = 'info testing'
+    const aFatalMessage = 'fatal testing'
+    const aWarnMessage = 'warn testing'
 
     before(() => {
       consoleDebug = console.log
       consoleError = console.error
+      consoleTrace = console.trace
+      consoleInfo = console.info
+      consoleWarn = console.warn
       console.log = () => null
       console.error = () => null
+      console.trace = () => null
+      console.info = () => null
+      console.warn = () => null
       debugSpy = sinon.spy(console, 'log')
-      warnSpy = sinon.spy(console, 'error')
+      errorSpy = sinon.spy(console, 'error')
+      traceSpy = sinon.spy(console, 'trace')
+      infoSpy = sinon.spy(console, 'info')
+      warnSpy = sinon.spy(console, 'warn')
     })
 
     after(() => {
       console.log = consoleDebug
       console.error = consoleError
+      console.trace = consoleTrace
+      console.info = consoleInfo
+      console.warn = consoleWarn
     })
 
     beforeEach(() => {
       window.localStorage.clear()
       window.localStorage.setItem('piko.level', 'off')
       debugSpy.resetHistory()
+      errorSpy.resetHistory()
+      traceSpy.resetHistory()
+      infoSpy.resetHistory()
       warnSpy.resetHistory()
     })
 
-    it('should log debug and error level when initialized in localStorage with "debug"', () => {
+    it('should log corresponding levels when initialized in localStorage with "trace"', () => {
       const loggerKey = 'test'
-      window.localStorage.setItem(`piko.level.${loggerKey}`, 'debug')
-      const aDebugMessage = 'debug testing'
+      window.localStorage.setItem(`piko.level.${loggerKey}`, 'trace')
       const aDebugMessage2 = 'debug testing 2'
-      const anErrorMessage = 'error testing'
 
       const piko = new PikoLogger()
       const logger = piko.logger(loggerKey)
+
       logger.debug(() => aDebugMessage)
       logger.debug(() => aDebugMessage2)
       logger.error(() => anErrorMessage)
+      logger.trace(() => aTraceMessage)
+      logger.info(() => anInfoMessage)
+      logger.fatal(() => aFatalMessage)
+      logger.warn(() => aWarnMessage)
 
       expect(debugSpy.callCount).to.equal(2)
       expect(debugSpy.args[0][0]).to.equal('DEBUG | test | ')
       expect(debugSpy.args[0][1]).to.equal(aDebugMessage)
       expect(debugSpy.args[1][0]).to.equal('DEBUG | test | ')
       expect(debugSpy.args[1][1]).to.equal(aDebugMessage2)
+      expect(errorSpy.callCount).to.equal(2)
+      expect(errorSpy.args[0][0]).to.equal('ERROR | test | ')
+      expect(errorSpy.args[0][1]).to.equal(anErrorMessage)
+      expect(errorSpy.args[1][0]).to.equal('FATAL | test | ')
+      expect(errorSpy.args[1][1]).to.equal(aFatalMessage)
+      expect(traceSpy.callCount).to.equal(1)
+      expect(infoSpy.callCount).to.equal(1)
+      expect(infoSpy.args[0][0]).to.equal('INFO | test | ')
+      expect(infoSpy.args[0][1]).to.equal(anInfoMessage)
       expect(warnSpy.callCount).to.equal(1)
-      expect(warnSpy.args[0][0]).to.equal('ERROR | test | ')
-      expect(warnSpy.args[0][1]).to.equal(anErrorMessage)
+      expect(warnSpy.args[0][0]).to.equal('WARN | test | ')
+      expect(warnSpy.args[0][1]).to.equal(aWarnMessage)
     })
 
-    it('should log only error level when initialized in localStorage with "error"', () => {
+    it('should log corresponding levels when initialized in localStorage with "debug"', () => {
+      const loggerKey = 'test'
+      window.localStorage.setItem(`piko.level.${loggerKey}`, 'debug')
+      const aDebugMessage2 = 'debug testing 2'
+
+      const piko = new PikoLogger()
+      const logger = piko.logger(loggerKey)
+
+      logger.debug(() => aDebugMessage)
+      logger.debug(() => aDebugMessage2)
+      logger.error(() => anErrorMessage)
+      logger.trace(() => aTraceMessage)
+      logger.info(() => anInfoMessage)
+      logger.fatal(() => aFatalMessage)
+      logger.warn(() => aWarnMessage)
+
+      expect(debugSpy.callCount).to.equal(2)
+      expect(debugSpy.args[0][0]).to.equal('DEBUG | test | ')
+      expect(debugSpy.args[0][1]).to.equal(aDebugMessage)
+      expect(debugSpy.args[1][0]).to.equal('DEBUG | test | ')
+      expect(debugSpy.args[1][1]).to.equal(aDebugMessage2)
+      expect(errorSpy.callCount).to.equal(2)
+      expect(errorSpy.args[0][0]).to.equal('ERROR | test | ')
+      expect(errorSpy.args[0][1]).to.equal(anErrorMessage)
+      expect(errorSpy.args[1][0]).to.equal('FATAL | test | ')
+      expect(errorSpy.args[1][1]).to.equal(aFatalMessage)
+      expect(traceSpy.callCount).to.equal(0)
+      expect(infoSpy.callCount).to.equal(1)
+      expect(infoSpy.args[0][0]).to.equal('INFO | test | ')
+      expect(infoSpy.args[0][1]).to.equal(anInfoMessage)
+      expect(warnSpy.callCount).to.equal(1)
+      expect(warnSpy.args[0][0]).to.equal('WARN | test | ')
+      expect(warnSpy.args[0][1]).to.equal(aWarnMessage)
+    })
+
+    it('should log corresponding levels when initialized in localStorage with "info"', () => {
+      const loggerKey = 'test'
+      window.localStorage.setItem(`piko.level.${loggerKey}`, 'info')
+      const aDebugMessage2 = 'debug testing 2'
+
+      const piko = new PikoLogger()
+      const logger = piko.logger(loggerKey)
+
+      logger.debug(() => aDebugMessage)
+      logger.debug(() => aDebugMessage2)
+      logger.error(() => anErrorMessage)
+      logger.trace(() => aTraceMessage)
+      logger.info(() => anInfoMessage)
+      logger.fatal(() => aFatalMessage)
+      logger.warn(() => aWarnMessage)
+
+      expect(debugSpy.callCount).to.equal(0)
+      expect(errorSpy.callCount).to.equal(2)
+      expect(errorSpy.args[0][0]).to.equal('ERROR | test | ')
+      expect(errorSpy.args[0][1]).to.equal(anErrorMessage)
+      expect(errorSpy.args[1][0]).to.equal('FATAL | test | ')
+      expect(errorSpy.args[1][1]).to.equal(aFatalMessage)
+      expect(traceSpy.callCount).to.equal(0)
+      expect(infoSpy.callCount).to.equal(1)
+      expect(infoSpy.args[0][0]).to.equal('INFO | test | ')
+      expect(infoSpy.args[0][1]).to.equal(anInfoMessage)
+      expect(warnSpy.callCount).to.equal(1)
+      expect(warnSpy.args[0][0]).to.equal('WARN | test | ')
+      expect(warnSpy.args[0][1]).to.equal(aWarnMessage)
+    })
+
+    it('should log corresponding levels when initialized in localStorage with "warn"', () => {
+      const loggerKey = 'test'
+      window.localStorage.setItem(`piko.level.${loggerKey}`, 'warn')
+      const aDebugMessage2 = 'debug testing 2'
+
+      const piko = new PikoLogger()
+      const logger = piko.logger(loggerKey)
+
+      logger.debug(() => aDebugMessage)
+      logger.debug(() => aDebugMessage2)
+      logger.error(() => anErrorMessage)
+      logger.trace(() => aTraceMessage)
+      logger.info(() => anInfoMessage)
+      logger.fatal(() => aFatalMessage)
+      logger.warn(() => aWarnMessage)
+
+      expect(debugSpy.callCount).to.equal(0)
+      expect(errorSpy.callCount).to.equal(2)
+      expect(errorSpy.args[0][0]).to.equal('ERROR | test | ')
+      expect(errorSpy.args[0][1]).to.equal(anErrorMessage)
+      expect(errorSpy.args[1][0]).to.equal('FATAL | test | ')
+      expect(errorSpy.args[1][1]).to.equal(aFatalMessage)
+      expect(traceSpy.callCount).to.equal(0)
+      expect(infoSpy.callCount).to.equal(0)
+      expect(warnSpy.callCount).to.equal(1)
+      expect(warnSpy.args[0][0]).to.equal('WARN | test | ')
+      expect(warnSpy.args[0][1]).to.equal(aWarnMessage)
+    })
+
+    it('should log only error and fatal level when initialized in localStorage with "error"', () => {
       const loggerKey = 'test'
       window.localStorage.setItem(`piko.level.${loggerKey}`, 'error')
-      const aDebugMessage = 'debug testing'
-      const anErrorMessage = 'error testing'
 
       const piko = new PikoLogger()
       const logger = piko.logger(loggerKey)
       logger.debug(() => aDebugMessage)
       logger.error(() => anErrorMessage)
+      logger.fatal(() => aFatalMessage)
 
       expect(debugSpy.callCount).to.equal(0)
-      expect(warnSpy.callCount).to.equal(1)
-      expect(warnSpy.args[0][0]).to.equal('ERROR | test | ')
-      expect(warnSpy.args[0][1]).to.equal(anErrorMessage)
+      expect(errorSpy.callCount).to.equal(2)
+      expect(errorSpy.args[0][0]).to.equal('ERROR | test | ')
+      expect(errorSpy.args[0][1]).to.equal(anErrorMessage)
+      expect(errorSpy.args[1][0]).to.equal('FATAL | test | ')
+      expect(errorSpy.args[1][1]).to.equal(aFatalMessage)
+    })
+
+    it('should log only fatal level when initialized in localStorage with "fatal"', () => {
+      const loggerKey = 'test'
+      window.localStorage.setItem(`piko.level.${loggerKey}`, 'fatal')
+      const aDebugMessage2 = 'debug testing 2'
+
+      const piko = new PikoLogger()
+      const logger = piko.logger(loggerKey)
+
+      logger.debug(() => aDebugMessage)
+      logger.debug(() => aDebugMessage2)
+      logger.error(() => anErrorMessage)
+      logger.trace(() => aTraceMessage)
+      logger.info(() => anInfoMessage)
+      logger.fatal(() => aFatalMessage)
+      logger.warn(() => aWarnMessage)
+
+      expect(debugSpy.callCount).to.equal(0)
+      expect(errorSpy.callCount).to.equal(1)
+      expect(errorSpy.args[0][0]).to.equal('FATAL | test | ')
+      expect(errorSpy.args[0][1]).to.equal(aFatalMessage)
+      expect(traceSpy.callCount).to.equal(0)
+      expect(infoSpy.callCount).to.equal(0)
+      expect(warnSpy.callCount).to.equal(0)
     })
 
     it('should not log any level when initialized in localStorage with "off"', () => {
       const loggerKey = 'test'
-      const aDebugMessage = 'debug testing'
-      const anErrorMessage = 'error testing'
 
       const piko = new PikoLogger()
       const logger = piko.logger(loggerKey)
       logger.debug(() => aDebugMessage)
       logger.error(() => anErrorMessage)
+      logger.trace(() => aTraceMessage)
+      logger.info(() => anInfoMessage)
+      logger.fatal(() => aFatalMessage)
 
       expect(debugSpy.callCount).to.equal(0)
-      expect(warnSpy.callCount).to.equal(0)
+      expect(errorSpy.callCount).to.equal(0)
+      expect(traceSpy.callCount).to.equal(0)
+      expect(infoSpy.callCount).to.equal(0)
+    })
+
+    it('should log all levels when initialized in localStorage with "all"', () => {
+      const loggerKey = 'test'
+      window.localStorage.setItem(`piko.level.${loggerKey}`, 'all')
+
+      const piko = new PikoLogger()
+      const logger = piko.logger(loggerKey)
+      logger.debug(() => aDebugMessage)
+      logger.error(() => anErrorMessage)
+      logger.trace(() => aTraceMessage)
+      logger.info(() => anInfoMessage)
+      logger.fatal(() => aFatalMessage)
+
+      expect(debugSpy.callCount).to.equal(1)
+      expect(errorSpy.callCount).to.equal(2)
+      expect(traceSpy.callCount).to.equal(1)
+      expect(infoSpy.callCount).to.equal(1)
     })
 
     it('should not log any level when not initialized in localStorage', () => {
       window.localStorage.clear()
       const loggerKey = 'test'
-      const aDebugMessage = 'debug testing'
-      const anErrorMessage = 'error testing'
 
       const piko = new PikoLogger()
       const logger = piko.logger(loggerKey)
       logger.debug(() => aDebugMessage)
       logger.error(() => anErrorMessage)
+      logger.trace(() => aTraceMessage)
+      logger.info(() => anInfoMessage)
+      logger.fatal(() => aFatalMessage)
 
       expect(debugSpy.callCount).to.equal(0)
-      expect(warnSpy.callCount).to.equal(0)
+      expect(errorSpy.callCount).to.equal(0)
+      expect(traceSpy.callCount).to.equal(0)
+      expect(infoSpy.callCount).to.equal(0)
     })
 
     it('should log corresponding level for each initializated logger', () => {
@@ -111,9 +295,7 @@ describe('PikoLogger', () => {
       const loggerKey2 = 'test2'
       window.localStorage.setItem(`piko.level.${loggerKey1}`, 'debug')
       window.localStorage.setItem(`piko.level.${loggerKey2}`, 'error')
-      const aDebugMessage = 'debug testing'
       const aDebugMessage2 = 'debug testing 2'
-      const anErrorMessage = 'error testing'
       const anErrorMessage2 = 'error testing 2'
 
       const piko = new PikoLogger()
@@ -133,13 +315,13 @@ describe('PikoLogger', () => {
       expect(debugSpy.args[0][1]).to.equal(aDebugMessage)
       expect(debugSpy.args[1][0]).to.equal('DEBUG | test | ')
       expect(debugSpy.args[1][1]).to.equal(aDebugMessage2)
-      expect(warnSpy.callCount).to.equal(3)
-      expect(warnSpy.args[0][0]).to.equal('ERROR | test | ')
-      expect(warnSpy.args[0][1]).to.equal(anErrorMessage)
-      expect(warnSpy.args[1][0]).to.equal('ERROR | test2 | ')
-      expect(warnSpy.args[1][1]).to.equal(anErrorMessage)
-      expect(warnSpy.args[2][0]).to.equal('ERROR | test2 | ')
-      expect(warnSpy.args[2][1]).to.equal(anErrorMessage2)
+      expect(errorSpy.callCount).to.equal(3)
+      expect(errorSpy.args[0][0]).to.equal('ERROR | test | ')
+      expect(errorSpy.args[0][1]).to.equal(anErrorMessage)
+      expect(errorSpy.args[1][0]).to.equal('ERROR | test2 | ')
+      expect(errorSpy.args[1][1]).to.equal(anErrorMessage)
+      expect(errorSpy.args[2][0]).to.equal('ERROR | test2 | ')
+      expect(errorSpy.args[2][1]).to.equal(anErrorMessage2)
     })
   })
 })

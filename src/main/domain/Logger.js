@@ -5,20 +5,60 @@ export class Logger {
     this._console = console
   }
 
-  debug(log) {
-    if (this._level.shouldLog('debug')) {
+  trace(log) {
+    if (this._level.shouldLogTrace()) {
       this._log({
-        level: this._level.getLabel('debug'),
+        level: this._level.getTraceLabel(),
+        writter: this._console.trace,
+        log
+      })
+    }
+  }
+
+  debug(log) {
+    if (this._level.shouldLogDebug()) {
+      this._log({
+        level: this._level.getDebugLabel(),
         writter: this._console.log,
         log
       })
     }
   }
 
-  error(log) {
-    if (this._level.shouldLog('error')) {
+  info(log) {
+    if (this._level.shouldLogInfo()) {
       this._log({
-        level: this._level.getLabel('error'),
+        level: this._level.getInfoLabel(),
+        writter: this._console.info,
+        log
+      })
+    }
+  }
+
+  warn(log) {
+    if (this._level.shouldLogWarn()) {
+      this._log({
+        level: this._level.getWarnLabel(),
+        writter: this._console.warn,
+        log
+      })
+    }
+  }
+
+  error(log) {
+    if (this._level.shouldLogError()) {
+      this._log({
+        level: this._level.getErrorLabel(),
+        writter: this._console.error,
+        log
+      })
+    }
+  }
+
+  fatal(log) {
+    if (this._level.shouldLogFatal()) {
+      this._log({
+        level: this._level.getFatalLabel(),
         writter: this._console.error,
         log
       })

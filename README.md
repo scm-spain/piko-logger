@@ -55,23 +55,32 @@ There are two levels of enableing it:
 
 ### Initialize the logger
 The logger should be initialized with a custom key to identify the logger. 
-```code
-import PikoLoggerInitializer from '@adv-ui/piko-logger'
+* key (string): the **unique tracker name/identifier** that will be used to generate the outputs
 
-const piko = PikoLoggerInitializer.init()
-const logger = piko.logger(key)
+```code
+import Piko from '@adv-ui/piko-logger'
+
+const logger = Piko.logger(key)
 ```
 
 ### Log
 Once a logger is initialized with a key, that instance should be used to log.
 
-There are two exposed methods, one for each log level (debug, error).
+There are six exposed methods, one for each log level (trace, debug, info, warn, error, fatal)
 
 Log info should be passed in a functional way, to avoid execution if the log level is non-activated
 
+If more than one thing should be logged in the same trace, the function should return an array
+
+All data types could be logged
+
 ```code
 logger.debug(()=> "this is the info I want to log")
-logger.error(()=> "this is the error I want to log")
+const error = {
+    name: 'example error', 
+    message: 'example error message'
+}
+logger.error(()=> ["this is the error I want to log", {error}])
 ```
 
 This two example logs will appear in the console like this (using "example" as the key):
@@ -79,7 +88,7 @@ This two example logs will appear in the console like this (using "example" as t
 DEBUG | example | this is the info I want to log
 
 
-ERROR | example | this is the error I want to log
+ERROR | example |  this is the error I want to log {name: "example error", message: "example error message"}
 
 ## License
 Piko Logger is [MIT licensed](./LICENSE).

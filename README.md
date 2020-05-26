@@ -33,9 +33,9 @@ Piko Logger is a tiny logger for web environments.
 
 ## Usage
 
-### Enable/disble the logger
+### Enable/disable the logger
 By default the log level is set to off, so logs are disabled.
-There are two levels of enableing it:
+There are two levels of enabling it:
 - Application level: 
     
     *"piko.level" = #logLevel*

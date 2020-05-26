@@ -1,8 +1,8 @@
-import {PikoLogger} from '../../application/PikoLogger'
+import {Piko} from '../../application/Piko'
 
 class PikoLoggerInitializer {
   static init() {
-    return new PikoLogger()
+    return new Piko()
   }
 }
 

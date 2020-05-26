@@ -1,7 +1,7 @@
 import {Level} from '../domain/Level'
 import {Logger} from '../domain/Logger'
 
-export class PikoLogger {
+export class Piko {
   constructor() {
     this._logger = new Map()
   }

@@ -1,9 +1,9 @@
 import {JSDOM} from 'jsdom'
 import {expect} from 'chai'
 import sinon from 'sinon'
-import PikoLogger from '../main/index'
+import Piko from '../main/index'
 
-describe('PikoLogger', () => {
+describe('Piko', () => {
   const dom = new JSDOM('<!DOCTYPE html><body></body>', {
     url: 'http://localhost'
   })
@@ -27,7 +27,6 @@ describe('PikoLogger', () => {
     const anInfoMessage = 'info testing'
     const aFatalMessage = 'fatal testing'
     const aWarnMessage = 'warn testing'
-    const Piko = PikoLogger
 
     before(() => {
       consoleDebug = console.log

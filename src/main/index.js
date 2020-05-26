@@ -1,5 +1,5 @@
 import {PikoLoggerInitializer} from './infrastructure/bootstrap/PikoLoggerInitializer'
 
-const PikoLogger = PikoLoggerInitializer.init()
+const Piko = PikoLoggerInitializer.init()
 
-export default PikoLogger
+export default Piko

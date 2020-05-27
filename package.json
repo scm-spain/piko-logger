@@ -1,6 +1,6 @@
 {
   "name": "@adv-ui/piko-logger",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "Tiny logger for web environments",
   "main": "dist",
   "scripts": {

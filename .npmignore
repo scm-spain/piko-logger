@@ -2,6 +2,7 @@ src
 coverage
 .travis.yml
 .idea
+.vscode
 .eslintignore
 .github
 resources

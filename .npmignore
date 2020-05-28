@@ -2,9 +2,12 @@ src
 coverage
 .travis.yml
 .idea
+.vscode
 .eslintignore
 .github
 resources
 package
 *.tgz
 versiona.js
+mocha.config.js
+.babelrc.js

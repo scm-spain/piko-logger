@@ -9,15 +9,13 @@ export class Level {
   _getLevel() {
     if (typeof window !== 'undefined') {
       try {
-        return (
+        const value =
           window.localStorage.getItem(`${LOCAL_STORAGE_KEY}.${this._key}`) ||
-          window.localStorage.getItem(LOCAL_STORAGE_KEY) ||
-          DEFAULT_LEVEL
-        )
-      } catch {
-        return DEFAULT_LEVEL
-      }
+          window.localStorage.getItem(LOCAL_STORAGE_KEY)
+        return (!!LEVEL[value] && value) || DEFAULT_LEVEL
+      } catch {}
     }
+    return DEFAULT_LEVEL
   }
 
   shouldLogTrace() {

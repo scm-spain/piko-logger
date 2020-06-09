@@ -2,6 +2,7 @@ import {JSDOM} from 'jsdom'
 import {expect} from 'chai'
 import sinon from 'sinon'
 import Piko from '../main/index'
+import {DEFAULT_LEVEL} from '../main/domain/constants'
 
 describe('Piko', () => {
   const dom = new JSDOM('<!DOCTYPE html><body></body>', {
@@ -334,6 +335,17 @@ describe('Piko', () => {
       expect(errorSpy.args[0][0]).to.equal('FATAL | test | ')
       expect(errorSpy.args[0][1]).to.equal(aFatalMessage)
       expect(errorSpy.args[0][2]).to.equal(error)
+    })
+    it('should not fail on invalid configured level', () => {
+      const key1 = 'key1'
+      const key2 = 'key2'
+      window.localStorage.setItem('piko.level.key1', undefined)
+      window.localStorage.setItem('piko.level.key2', 'invent')
+      const logger1 = Piko.logger(key1)
+      const logger2 = Piko.logger(key2)
+
+      expect(logger1._level._level).to.equal(DEFAULT_LEVEL)
+      expect(logger2._level._level).to.equal(DEFAULT_LEVEL)
     })
   })
 })

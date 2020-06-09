@@ -8,7 +8,7 @@ cache:
 before_install:
   - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
 script:
-  - npm run check && TRAVIS_TAG=$TRAVIS_TAG GH_TOKEN=$GH_TOKEN npm run versiona
+  - npm run check && npm run versiona
   - npm run coverage:ci
 
 after_success:

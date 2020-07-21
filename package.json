@@ -39,7 +39,7 @@
     "babel-plugin-transform-define": "2.0.0",
     "babel-preset-sui": "3",
     "chai": "4.2.0",
-    "codecov": "3.6.5",
+    "codecov": "3.7.1",
     "html-webpack-plugin": "4.0.4",
     "mocha": "5.2.0",
     "nyc": "15.0.0",

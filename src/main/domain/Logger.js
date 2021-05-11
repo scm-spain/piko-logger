@@ -1,8 +1,12 @@
 export class Logger {
-  constructor({level, key = 'DEFAULT'}) {
+  constructor({level, key = ''}) {
     this._key = key
     this._level = level
     this._console = console
+  }
+
+  tag(tag = 'default') {
+    return new Logger({level: this._level, key: `${this._key} # ${tag}`})
   }
 
   trace(log) {

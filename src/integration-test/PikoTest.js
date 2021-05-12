@@ -347,5 +347,15 @@ describe('Piko', () => {
       expect(logger1._level._level).to.equal(DEFAULT_LEVEL)
       expect(logger2._level._level).to.equal(DEFAULT_LEVEL)
     })
+    it('should create tagged loggers', () => {
+      const baseKey = 'base'
+      window.localStorage.setItem(`piko.level.${baseKey}`, 'debug')
+      const base = Piko.logger(baseKey)
+      const tagged = base.tag('tagged')
+      const aDebugMessage = 'debug testing'
+      tagged.debug(() => aDebugMessage)
+      expect(debugSpy.args[0][0]).to.equal('DEBUG | base # tagged | ')
+      expect(debugSpy.args[0][1]).to.equal(aDebugMessage)
+    })
   })
 })

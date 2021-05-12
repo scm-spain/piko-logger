@@ -60,7 +60,17 @@ The logger should be initialized with a custom key to identify the logger.
 ```code
 import Piko from '@adv-ui/piko-logger'
 
-const logger = Piko.logger(key)
+const logger = Piko.logger('MyLibrary')
+
+....
+
+// optionally use a tagged instance of logger to fine grain where the logged action occurs
+
+const taggedLogger = logger.tag('MyFunction')
+
+// using the logger methods, logs will show a reference to 'MyLibrary' 
+// using the taggedLogger methods, logs will show a reference to 'MyLibrary # MyFunction' 
+
 ```
 
 ### Log
